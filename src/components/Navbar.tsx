@@ -30,17 +30,24 @@ export default function Navbar() {
     }
   };
 
-  return (
-    <nav className="bg-white border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2">
-            <BookSearch className="w-8 h-8 text-blue-600" />
-            <div>
-              <div className="text-xl font-bold text-blue-600">KLH</div>
-              <div className="text-xs text-gray-500 -mt-1">Lost and Found</div>
-            </div>
-          </Link>
+  // You can replace this URL with your actual logo URL
+  const logoPath = '/assets/KLH_Logo.png'; // Corrected spelling from 'assests' to 'assets'
+
+return (
+  <nav className="bg-white border-b">
+    <div className="container mx-auto px-4">
+      <div className="flex items-center justify-between h-16">
+        <Link to="/" className="flex items-center gap-2">
+          <img 
+            src={logoPath} 
+            alt="KLH Logo" 
+            className="w-15 h-12 squared-full object-cover"
+          />
+          <div>
+            <div className="text-xl font-bold text-blue-600">Lost and Found</div>
+            <div className="text-xs text-gray-500 -mt-1">Reuniting KLH's lost items with their owners</div>
+          </div>
+        </Link>
 
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm">

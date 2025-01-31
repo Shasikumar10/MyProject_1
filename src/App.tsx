@@ -8,6 +8,8 @@ import ItemDetails from './pages/ItemDetails';
 import Profile from './pages/Profile';
 import { useAuth } from './hooks/useAuth';
 
+
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
