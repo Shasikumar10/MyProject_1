@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Search as BookSearch } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react'; // Import the eye icons
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -15,6 +15,7 @@ export default function Auth() {
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
   const { signIn, signUp } = useAuth();
 
@@ -79,14 +80,15 @@ export default function Auth() {
     <div className="min-h-[80vh] flex flex-col items-center justify-center">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <BookSearch className="w-12 h-12 text-blue-600" />
-            <div>
-              <div className="text-3xl font-bold text-blue-600">KLH</div>
-              <div className="text-lg text-gray-500">Lost and Found</div>
-            </div>
+          <div className="flex flex-col items-center justify-center gap-2 mb-4">
+            <img 
+              src="/assets/KLH_Logo.png" 
+              alt="KLH Logo" 
+              className="w-15 h-13 squared-full object-cover"
+            />
+            <div className="text-2xl font-bold text-blue-600">Lost and Found</div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900">
             {isSignUp ? 'Create your account' : 'Welcome back'}
           </h1>
           <p className="text-gray-500 mt-2">
@@ -161,14 +163,23 @@ export default function Auth() {
                 >
                   Password
                 </label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full"
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'} // Toggle input type
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />} {/* Use eye icons */}
+                  </button>
+                </div>
                 {isSignUp && (
                   <p className="mt-1 text-sm text-gray-500">
                     Password must be at least 6 characters long

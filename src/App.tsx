@@ -8,8 +8,6 @@ import ItemDetails from './pages/ItemDetails';
 import Profile from './pages/Profile';
 import { useAuth } from './hooks/useAuth';
 
-
-
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
@@ -41,9 +39,9 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen animated-background">
         {user && <Navbar />}
-        <main className={`container mx-auto px-4 ${user ? 'py-8' : 'py-0'}`}>
+        <main className={`container mx-auto px-4 ${user ? 'py-8' : 'py-0'} animate-fade-in`}>
           <Routes>
             <Route
               path="/"
@@ -88,7 +86,7 @@ function App() {
                   <Profile />
                 </ProtectedRoute>
               }
-            />  
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
