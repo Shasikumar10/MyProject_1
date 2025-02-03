@@ -1,33 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
-import { Send, Paperclip } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'react-hot-toast';
 
-interface Message {
-  id: string;
-  sender_id: string;
-  content: string;
-  created_at: string;
-  sender: {
-    full_name: string;
-    avatar_url: string;
-  };
-}
-
-interface ChatProps {
-  itemId: string;
-  recipientId: string;
-}
-
-export function Chat({ itemId, recipientId }: ChatProps) {
+export function Chat({ itemId, recipientId }) {
   const { user } = useAuth();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     fetchMessages();
@@ -42,7 +26,7 @@ export function Chat({ itemId, recipientId }: ChatProps) {
           filter: `item_id=eq.${itemId}`,
         },
         (payload) => {
-          const newMessage = payload.new as Message;
+          const newMessage = payload.new;
           setMessages((prev) => [...prev, newMessage]);
         }
       )
@@ -82,7 +66,7 @@ export function Chat({ itemId, recipientId }: ChatProps) {
     }
   };
 
-  const sendMessage = async (e: React.FormEvent) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
     if (!user || !newMessage.trim()) return;
 

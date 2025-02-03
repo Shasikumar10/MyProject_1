@@ -3,13 +3,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { MapPin, Calendar, Tag } from 'lucide-react';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
-import { Item } from '@/types';
 
-interface ItemCardProps {
-  item: Item;
-}
-
-export function ItemCard({ item }: ItemCardProps) {
+export function ItemCard({ item }) {
   return (
     <Link to={`/items/${item.id}`}>
       <Card className="hover-scale transition-all duration-300">

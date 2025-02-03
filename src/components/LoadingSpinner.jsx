@@ -1,4 +1,4 @@
-export function LoadingSpinner({ className = 'h-8 w-8' }: { className?: string }) {
+export function LoadingSpinner({ className = 'h-8 w-8' }) {
   return (
     <div className="flex items-center justify-center">
       <div

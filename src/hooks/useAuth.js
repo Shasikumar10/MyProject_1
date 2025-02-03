@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { User } from '@supabase/supabase-js';
-
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -34,7 +32,7 @@ export function useAuth() {
     return data;
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email, password) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,

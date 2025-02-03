@@ -19,7 +19,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const { signIn, signUp } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -70,7 +70,7 @@ export default function Auth() {
         navigate('/');
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'An error occurred');
+      toast.error(error.message || 'An error occurred');
     } finally {
       setLoading(false);
     }

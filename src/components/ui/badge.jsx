@@ -1,12 +1,7 @@
 import { cn } from '@/lib/utils';
+import PropTypes from 'prop-types';
 
-interface BadgeProps {
-  variant?: 'default' | 'success' | 'warning' | 'error';
-  children: React.ReactNode;
-  className?: string;
-}
-
-export function Badge({ variant = 'default', children, className }: BadgeProps) {
+export function Badge({ variant = 'default', children, className }) {
   return (
     <span
       className={cn(
@@ -24,3 +19,9 @@ export function Badge({ variant = 'default', children, className }: BadgeProps) 
     </span>
   );
 }
+
+Badge.propTypes = {
+  variant: PropTypes.oneOf(['default', 'success', 'warning', 'error']),
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};

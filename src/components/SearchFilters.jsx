@@ -3,17 +3,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { useState } from 'react';
 
-interface SearchFiltersProps {
-  onSearch: (search: string) => void;
-  onFilterChange: (filters: {
-    category: string;
-    type: string;
-    status: string;
-    sortBy: string;
-  }) => void;
-}
-
-export function SearchFilters({ onSearch, onFilterChange }: SearchFiltersProps) {
+export function SearchFilters({ onSearch, onFilterChange }) {
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     category: 'all',
@@ -22,10 +12,7 @@ export function SearchFilters({ onSearch, onFilterChange }: SearchFiltersProps) 
     sortBy: 'newest',
   });
 
-  const handleFilterChange = (
-    key: keyof typeof filters,
-    value: string
-  ) => {
+  const handleFilterChange = (key, value) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);

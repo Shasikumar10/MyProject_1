@@ -5,13 +5,12 @@ import { ItemCard } from '@/components/ItemCard';
 import { EmptyState } from '@/components/EmptyState';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { supabase } from '@/lib/supabase';
-import { Item } from '@/types';
 import { toast } from 'react-hot-toast';
 import { Search, PlusCircle } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({

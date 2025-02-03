@@ -1,47 +1,32 @@
-import { useState, useEffect } from 'react';
-import { Bell } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'react-router-dom';
-
-interface Notification {
-  id: string;
-  type: 'message' | 'claim' | 'status';
-  content: string;
-  read: boolean;
-  created_at: string;
-  item_id: string;
-  actor_id: string;
-  actor_profile?: {
-    full_name: string;
-    avatar_url: string;
-  };
-}
+import { useState, useEffect } from "react";
+import { Bell } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 export function NotificationBell() {
   const { user } = useAuth();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     if (user) {
       fetchNotifications();
-      
+
       const subscription = supabase
-        .channel('notifications')
+        .channel("notifications")
         .on(
-          'postgres_changes',
+          "postgres_changes",
           {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'notifications',
+            event: "INSERT",
+            schema: "public",
+            table: "notifications",
             filter: `user_id=eq.${user.id}`,
           },
           (payload) => {
-            const newNotification = payload.new as Notification;
+            const newNotification = payload.new;
             setNotifications((prev) => [newNotification, ...prev]);
-            // Play notification sound
-            new Audio('/notification.mp3').play().catch(() => {});
+            new Audio("/notification.mp3").play().catch(() => {});
           }
         )
         .subscribe();
@@ -56,24 +41,23 @@ export function NotificationBell() {
     if (!user) return;
 
     try {
-      // First, get the notifications
-      const { data: notificationsData, error: notificationsError } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(10);
+      const { data: notificationsData, error: notificationsError } =
+        await supabase
+          .from("notifications")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(10);
 
       if (notificationsError) throw notificationsError;
 
-      // Then, fetch the actor profiles for each notification
-      const notifications = await Promise.all(
+      const notificationsWithProfiles = await Promise.all(
         (notificationsData || []).map(async (notification) => {
           if (notification.actor_id) {
             const { data: actorProfile } = await supabase
-              .from('profiles')
-              .select('full_name, avatar_url')
-              .eq('id', notification.actor_id)
+              .from("profiles")
+              .select("full_name, avatar_url")
+              .eq("id", notification.actor_id)
               .single();
 
             return {
@@ -85,28 +69,26 @@ export function NotificationBell() {
         })
       );
 
-      setNotifications(notifications);
+      setNotifications(notificationsWithProfiles);
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      console.error("Error fetching notifications:", error);
     }
   };
 
-  const markAsRead = async (notificationId: string) => {
+  const markAsRead = async (notificationId) => {
     try {
       const { error } = await supabase
-        .from('notifications')
+        .from("notifications")
         .update({ read: true })
-        .eq('id', notificationId);
+        .eq("id", notificationId);
 
       if (error) throw error;
 
       setNotifications((prev) =>
-        prev.map((n) =>
-          n.id === notificationId ? { ...n, read: true } : n
-        )
+        prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
       );
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      console.error("Error marking notification as read:", error);
     }
   };
 
@@ -142,7 +124,7 @@ export function NotificationBell() {
                   key={notification.id}
                   to={`/items/${notification.item_id}`}
                   className={`block px-4 py-3 hover:bg-gray-50 transition-colors ${
-                    !notification.read ? 'bg-blue-50' : ''
+                    !notification.read ? "bg-blue-50" : ""
                   }`}
                   onClick={() => {
                     markAsRead(notification.id);
@@ -159,15 +141,15 @@ export function NotificationBell() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-500">
-                          {notification.actor_profile?.full_name?.[0] || '?'}
+                          {notification.actor_profile?.full_name?.[0] || "?"}
                         </div>
                       )}
                     </div>
                     <div>
                       <p className="text-sm">
                         <span className="font-medium">
-                          {notification.actor_profile?.full_name || 'Someone'}
-                        </span>{' '}
+                          {notification.actor_profile?.full_name || "Someone"}
+                        </span>{" "}
                         {notification.content}
                       </p>
                       <p className="text-xs text-gray-500 mt-1">

@@ -11,7 +11,7 @@ import { Card } from '@/components/ui/card';
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -38,8 +38,8 @@ export default function ProfilePage() {
             {
               id: user?.id,
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            }
+              updated_at: new Date().toISOString(),
+            },
           ])
           .select()
           .single();
@@ -59,7 +59,7 @@ export default function ProfilePage() {
     }
   }
 
-  async function handleProfileUpdate(e: React.FormEvent) {
+  async function handleProfileUpdate(e) {
     e.preventDefault();
     if (!user || !profile) return;
 
@@ -82,7 +82,7 @@ export default function ProfilePage() {
     }
   }
 
-  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleAvatarUpload(e) {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
@@ -108,7 +108,7 @@ export default function ProfilePage() {
         .from('avatars')
         .upload(fileName, file, {
           cacheControl: '3600',
-          upsert: true
+          upsert: true,
         });
 
       if (uploadError) throw uploadError;
@@ -126,7 +126,7 @@ export default function ProfilePage() {
 
       if (updateError) throw updateError;
 
-      setProfile(prev => prev ? { ...prev, avatar_url: publicUrl } : null);
+      setProfile(prev => (prev ? { ...prev, avatar_url: publicUrl } : null));
       toast.success('Avatar updated successfully');
     } catch (error) {
       console.error('Error uploading avatar:', error);

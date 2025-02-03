@@ -26,7 +26,7 @@ export default function ReportItem() {
     image_url: '',
   });
 
-  const validateFile = (file: File) => {
+  const validateFile = (file) => {
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
       throw new Error('Please upload a valid image file (JPEG, PNG, or WebP)');
     }
@@ -35,7 +35,7 @@ export default function ReportItem() {
     }
   };
 
-  const handleImageUpload = async (file: File) => {
+  const handleImageUpload = async (file) => {
     if (!user) return;
     
     try {
@@ -71,7 +71,7 @@ export default function ReportItem() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
       toast.error('Please sign in to report an item');
@@ -100,7 +100,7 @@ export default function ReportItem() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };

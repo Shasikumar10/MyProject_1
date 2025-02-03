@@ -1,17 +1,7 @@
 import { DivideIcon as LucideIcon } from 'lucide-react';
 import { Button } from './ui/button';
 
-interface EmptyStateProps {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  action?: {
-    label: string;
-    onClick: () => void;
-  };
-}
-
-export function EmptyState({ icon: Icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({ icon: Icon, title, description, action }) {
   return (
     <div className="text-center py-12 px-4 animate-fade-in">
       <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-6">
